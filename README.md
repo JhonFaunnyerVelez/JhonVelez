@@ -13,6 +13,29 @@ IMPORTANTE :
 Durante la implementación se detectó una diferencia entre la validación del formulario y la validación del backend (longitud mínima del campo nombre).
 Se decidió alinear el frontend con la validación del backend, manteniendo el backend como fuente de verdad.
 
+# Ejecutar todas las pruebas
+npm test
+
+# Ejecutar pruebas en modo watch (se re-ejecutan al guardar cambios)
+npm test -- --watch
+
+# Ejecutar pruebas de un archivo específico
+npm test -- products-page.spec.ts
+
+# Ejecutar pruebas con cobertura de código
+npm test -- --coverage
+
+# Ejecutar pruebas en modo verbose (más detalles)
+npm test -- --verbose
+
+# Ejecutar solo las pruebas que fallaron en la última ejecución
+npm test -- --onlyFailures
+
+# Ejecutar pruebas sin caché
+npm test -- --no-cache
+
+# Ejecutar pruebas y actualizar snapshots
+npm test -- --updateSnapshot
 
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
