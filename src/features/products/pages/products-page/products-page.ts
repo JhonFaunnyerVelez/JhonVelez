@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Product } from '../../../../app/core/models/product.model';
 import { ProductsApiService } from '../../../../app/core/services/products-api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { delay, finalize } from 'rxjs';
+import { PRODUCTS_MOCK } from './mock/products.mock';
 
 @Component({
   selector: 'app-products-page',
@@ -15,8 +16,8 @@ export class ProductsPage {
 
   products: Product[] = [];
 
-  loading = false;
-  error: string | null = null;
+  loading = signal(false);
+  error = signal<string | null>(null);
 
   query = '';
   page = 1;
@@ -31,18 +32,21 @@ export class ProductsPage {
   }
 
   private load(): void {
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
 
     this.api.getProducts()
-      .pipe(finalize(() => this.loading = false))
+      .pipe(
+        delay(1000), // Se agrega delay para simular tiempo de carga
+        finalize(() => this.loading.set(false))
+      )
       .subscribe({
         next: (data) => {
-          this.products = data ?? [];
+          this.products = PRODUCTS_MOCK;
           this.page = 1;
         },
         error: () => {
-          this.error = 'No fue posible cargar los productos.';
+          this.error.set('No fue posible cargar los productos.');
         },
       });
   }

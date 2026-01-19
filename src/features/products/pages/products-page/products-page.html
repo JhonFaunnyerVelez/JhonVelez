@@ -1,4 +1,5 @@
 <div class="shell">
+  <!-- Header -->
   <header class="topbar">
     <div class="brand">
       <span class="brandIcon" aria-hidden="true">🏦</span>
@@ -6,7 +7,9 @@
     </div>
   </header>
 
+  <!-- Card -->
   <main class="card">
+    <!-- Toolbar -->
     <div class="toolbar">
       <input
         class="search"
@@ -17,18 +20,25 @@
       />
     </div>
 
-    @if (loading) {
+    <!-- LOADING -->
+    @if (loading()) {
       <div class="loadingBox">
         @for (i of skeletonRows; track i) {
           <div class="skeletonRow"></div>
         }
       </div>
-    } @else if (error) {
+    }
+
+    <!-- ERROR -->
+    @else if (error()) {
       <div class="errorBox">
         <div class="errorTitle">Ocurrió un error</div>
-        <div class="errorText">{{ error }}</div>
+        <div class="errorText">{{ error() }}</div>
       </div>
-    } @else {
+    }
+
+    <!-- CONTENT -->
+    @else {
       <div class="tableWrap">
         <table class="table" aria-label="Listado de productos">
           <thead>
@@ -49,27 +59,62 @@
                     {{ (p.name?.[0] || 'P') | uppercase }}
                   </div>
                 </td>
-                <td class="ellipsis" title="{{ p.name }}">{{ p.name }}</td>
-                <td class="ellipsis" title="{{ p.description }}">{{ p.description }}</td>
-                <td class="colDate">{{ p.date_release }}</td>
-                <td class="colDate">{{ p.date_revision }}</td>
+
+                <td class="ellipsis" title="{{ p.name }}">
+                  {{ p.name }}
+                </td>
+
+                <td class="ellipsis" title="{{ p.description }}">
+                  {{ p.description }}
+                </td>
+
+                <td class="colDate">
+                  {{ p.date_release }}
+                </td>
+
+                <td class="colDate">
+                  {{ p.date_revision }}
+                </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
 
+      <!-- Footer -->
       <footer class="footer">
-        <div class="results">{{ total }} Resultados</div>
+        <div class="results">
+          {{ total }} Resultados
+        </div>
 
         <div class="pager">
-          <button class="btn" type="button" (click)="prevPage()" [disabled]="page === 1">‹</button>
+          <button
+            class="btn"
+            type="button"
+            (click)="prevPage()"
+            [disabled]="page === 1"
+          >
+            ‹
+          </button>
 
-          <div class="pageInfo">{{ page }} / {{ totalPages }}</div>
+          <div class="pageInfo">
+            {{ page }} / {{ totalPages }}
+          </div>
 
-          <button class="btn" type="button" (click)="nextPage()" [disabled]="page === totalPages">›</button>
+          <button
+            class="btn"
+            type="button"
+            (click)="nextPage()"
+            [disabled]="page === totalPages"
+          >
+            ›
+          </button>
 
-          <select class="select" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+          <select
+            class="select"
+            [ngModel]="pageSize"
+            (ngModelChange)="onPageSizeChange($event)"
+          >
             <option [ngValue]="5">5</option>
             <option [ngValue]="10">10</option>
             <option [ngValue]="20">20</option>
