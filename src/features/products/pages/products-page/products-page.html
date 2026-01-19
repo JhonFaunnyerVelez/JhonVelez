@@ -1,0 +1,81 @@
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brandIcon" aria-hidden="true">🏦</span>
+      <span class="brandText">BANCO</span>
+    </div>
+  </header>
+
+  <main class="card">
+    <div class="toolbar">
+      <input
+        class="search"
+        type="text"
+        placeholder="Search..."
+        [ngModel]="query"
+        (ngModelChange)="onQueryChange($event)"
+      />
+    </div>
+
+    @if (loading) {
+      <div class="loadingBox">
+        @for (i of skeletonRows; track i) {
+          <div class="skeletonRow"></div>
+        }
+      </div>
+    } @else if (error) {
+      <div class="errorBox">
+        <div class="errorTitle">Ocurrió un error</div>
+        <div class="errorText">{{ error }}</div>
+      </div>
+    } @else {
+      <div class="tableWrap">
+        <table class="table" aria-label="Listado de productos">
+          <thead>
+            <tr>
+              <th class="colLogo">Logo</th>
+              <th>Nombre del producto</th>
+              <th>Descripción</th>
+              <th class="colDate">Fecha de liberación</th>
+              <th class="colDate">Fecha de reestructuración</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (p of pagedProducts; track p.id) {
+              <tr>
+                <td class="colLogo">
+                  <div class="avatar" title="{{ p.logo }}">
+                    {{ (p.name?.[0] || 'P') | uppercase }}
+                  </div>
+                </td>
+                <td class="ellipsis" title="{{ p.name }}">{{ p.name }}</td>
+                <td class="ellipsis" title="{{ p.description }}">{{ p.description }}</td>
+                <td class="colDate">{{ p.date_release }}</td>
+                <td class="colDate">{{ p.date_revision }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="footer">
+        <div class="results">{{ total }} Resultados</div>
+
+        <div class="pager">
+          <button class="btn" type="button" (click)="prevPage()" [disabled]="page === 1">‹</button>
+
+          <div class="pageInfo">{{ page }} / {{ totalPages }}</div>
+
+          <button class="btn" type="button" (click)="nextPage()" [disabled]="page === totalPages">›</button>
+
+          <select class="select" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option [ngValue]="5">5</option>
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="20">20</option>
+          </select>
+        </div>
+      </footer>
+    }
+  </main>
+</div>
