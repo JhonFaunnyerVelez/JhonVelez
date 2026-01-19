@@ -4,6 +4,16 @@ PARA LEVANTAR PROYECTO
 1.Levantar proyecto api 
 2.Levantar prueba tecnica ng serve --proxy-config proxy.conf.json
 
+MEJORAS
+* se agrega boton cancelar en el form de producto para regresar al form de products
+* 
+
+IMPORTANTE : 
+
+Durante la implementación se detectó una diferencia entre la validación del formulario y la validación del backend (longitud mínima del campo nombre).
+Se decidió alinear el frontend con la validación del backend, manteniendo el backend como fuente de verdad.
+
+
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
 
