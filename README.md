@@ -3,7 +3,10 @@
 # PARA EJECUTAR PROYECTO
 
 Levantar proyecto api 
-Levantar prueba tecnica ng serve --proxy-config proxy.conf.json
+
+```bash
+ng serve --proxy-config proxy.conf.json
+```
 
 # MEJORAS
 * se agrega boton cancelar en el form de producto para regresar al form de products
