@@ -16,13 +16,16 @@ export class ProductsPage {
 
   products: Product[] = [];
 
+  // Signals, se usan para manejar el estado del componente y asi poder reflejar cambios en la UI de manera reactiva.
   loading = signal(false);
   error = signal<string | null>(null);
 
+  // Filtros y paginación , se usa query para el filtro de búsqueda, page para la página actual y pageSize para el número de elementos por página.
   query = '';
   page = 1;
   pageSize = 5;
 
+  // Filas de esqueleto para mostrar mientras se cargan los datos
   readonly skeletonRows = [0, 1, 2, 3, 4];
 
   constructor(private api: ProductsApiService) { }
@@ -31,6 +34,10 @@ export class ProductsPage {
     this.load();
   }
 
+  /**
+   * Carga los productos desde el servicio API.
+   * Maneja el estado de carga y errores utilizando señales.
+   */
   private load(): void {
     this.loading.set(true);
     this.error.set(null);
@@ -51,16 +58,28 @@ export class ProductsPage {
       });
   }
 
+  /**
+   * Se ejecuta cuando cambia el valor de búsqueda.
+   * @param value
+   */
+
   onQueryChange(value: string): void {
     this.query = value ?? '';
     this.page = 1;
   }
 
+  /**
+   * se ejecuta cuando cambia el tamaño de página.
+   * @param value
+   */
   onPageSizeChange(value: number): void {
     this.pageSize = Number(value);
     this.page = 1;
   }
 
+  /**
+   * Obtiene los productos filtrados según la consulta de búsqueda.
+   */
   get filteredProducts(): Product[] {
     const q = this.query.trim().toLowerCase();
     if (!q) return this.products;
