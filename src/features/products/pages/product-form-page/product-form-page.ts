@@ -23,10 +23,10 @@ export class ProductFormPage {
   public fb = inject(FormBuilder);
   public api = inject(ProductsApiService);
   public router = inject(Router);
-  public route = inject(ActivatedRoute);   // ✅
-  public location = inject(Location);      // ✅
+  public route = inject(ActivatedRoute);
+  public location = inject(Location);
 
-  // ✅ si viene id en la URL, estamos editando
+  //  si viene id en la URL, estamos editando
   editId: string | null = null;
 
   form = this.fb.group({
@@ -93,7 +93,7 @@ export class ProductFormPage {
   private loadProductFallback(id: string): void {
     this.api.getProducts().subscribe({
       next: (data: any) => {
-        const list = data?.data ?? data; // por si el backend devuelve { data: [] }
+        const list = data?.data ?? data;
         const found = (list as Product[]).find(x => x.id === id);
 
         if (!found) {
@@ -109,6 +109,10 @@ export class ProductFormPage {
     });
   }
 
+  /**
+   * setea los valores del formulario con el producto dado.
+   * @param p
+   */
   private patchForm(p: Product): void {
     this.form.patchValue({
       id: p.id,
@@ -129,6 +133,10 @@ export class ProductFormPage {
     return !!c && c.invalid && (c.touched || c.dirty);
   }
 
+  /**
+   * setea el formulario a su estado inicial.
+   * @returns
+   */
   reset(): void {
     this.submitError.set(null);
     this.form.reset();
@@ -142,6 +150,10 @@ export class ProductFormPage {
     this.form.get('id')!.setValue(this.generateId());
   }
 
+
+  /**
+   * Envía el formulario para crear o actualizar el producto.
+   */
   submit(): void {
     this.submitError.set(null);
 
@@ -153,7 +165,7 @@ export class ProductFormPage {
     const payload = this.form.getRawValue();
     this.saving.set(true);
 
-    // ✅ EDITAR: PUT /bp/products/:id (body sin id)
+    // EDITAR: PUT /bp/products/:id (body sin id)
     if (this.editId) {
       const { id, ...body } = payload as any;
 
@@ -171,7 +183,7 @@ export class ProductFormPage {
       return;
     }
 
-    // ✅ CREAR: POST /bp/products
+    // CREAR: POST /bp/products
     this.api.createProduct(payload as any).subscribe({
       next: () => {
         this.saving.set(false);

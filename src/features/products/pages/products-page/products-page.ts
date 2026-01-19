@@ -164,6 +164,10 @@ export class ProductsPage {
     this.productToDelete = null;
   }
 
+  /**
+   * Confirma la eliminación del producto seleccionado.
+   * @returns
+   */
   confirmDelete(): void {
     const p = this.productToDelete;
     if (!p) return;
