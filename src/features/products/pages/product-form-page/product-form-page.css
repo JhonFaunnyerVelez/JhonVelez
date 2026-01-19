@@ -1,0 +1,138 @@
+/* Layout */
+.shell {
+  min-height: 100vh;
+  background: #f4f6f8;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.topbar {
+  height: 56px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand {
+  display: flex;
+  gap: 10px;
+  font-weight: 700;
+}
+
+/* Card */
+.card {
+  max-width: 720px;
+  margin: 20px auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+/* Errors */
+.submitError {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+/* Form */
+.form {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+input {
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  outline: none;
+}
+
+input.invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+}
+
+.err {
+  font-size: 11px;
+  color: #ef4444;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+.btnPrimary {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 6px;
+  border: 1px solid #eab308;
+  background: #fde047;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+
+/* Responsive */
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    margin: 12px;
+  }
+}

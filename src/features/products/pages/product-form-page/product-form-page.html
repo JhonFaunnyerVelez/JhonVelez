@@ -1,0 +1,129 @@
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brandIcon">🏦</span>
+      <span class="brandText">BANCO</span>
+    </div>
+  </header>
+
+  <main class="card">
+    <!-- Título dinámico -->
+    <h2 class="title">
+      @if (editId) {
+      Editar producto
+      } @else {
+      Formulario de Registro
+      }
+    </h2>
+
+    @if (submitError()) {
+    <div class="submitError">{{ submitError() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="grid">
+        <!-- ID -->
+        <div class="field">
+          <label>ID</label>
+          <input type="text" formControlName="id" [class.invalid]="isInvalid('id')" />
+          @if (isInvalid('id')) {
+          <div class="err">
+            @if (form.get('id')?.errors?.['required']) { <span>Este campo es requerido</span> }
+            @else if (form.get('id')?.errors?.['minlength']) { <span>Mínimo 3 caracteres</span> }
+            @else if (form.get('id')?.errors?.['maxlength']) { <span>Máximo 10 caracteres</span> }
+            @else if (form.get('id')?.errors?.['idExists']) { <span>ID no válido!</span> }
+          </div>
+          }
+        </div>
+
+        <!-- Nombre -->
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" formControlName="name" [class.invalid]="isInvalid('name')" />
+          @if (isInvalid('name')) {
+          <div class="err">
+            @if (form.get('name')?.errors?.['required']) { <span>Este campo es requerido</span> }
+            @else if (form.get('name')?.errors?.['minlength']) { <span>Mínimo 6 caracteres</span> }
+            @else if (form.get('name')?.errors?.['maxlength']) { <span>Máximo 100 caracteres</span> }
+          </div>
+          }
+        </div>
+
+        <!-- Descripción -->
+        <div class="field">
+          <label>Descripción</label>
+          <input type="text" formControlName="description" [class.invalid]="isInvalid('description')" />
+          @if (isInvalid('description')) {
+          <div class="err">
+            @if (form.get('description')?.errors?.['required']) { <span>Este campo es requerido</span> }
+            @else if (form.get('description')?.errors?.['minlength']) { <span>Mínimo 10 caracteres</span> }
+            @else if (form.get('description')?.errors?.['maxlength']) { <span>Máximo 200 caracteres</span> }
+          </div>
+          }
+        </div>
+
+        <!-- Logo -->
+        <div class="field">
+          <label>Logo</label>
+          <input type="text" formControlName="logo" [class.invalid]="isInvalid('logo')" />
+          @if (isInvalid('logo')) {
+          <div class="err">Este campo es requerido</div>
+          }
+        </div>
+
+        <!-- Fecha Liberación -->
+        <div class="field">
+          <label>Fecha Liberación</label>
+          <input type="date" formControlName="date_release" [class.invalid]="isInvalid('date_release')" />
+          @if (isInvalid('date_release')) {
+          <div class="err">
+            @if (form.get('date_release')?.errors?.['required']) {
+            <span>Este campo es requerido</span>
+            }
+            @else if (form.get('date_release')?.errors?.['minToday']) {
+            <span>La fecha debe ser hoy o mayor</span>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- Fecha Revisión -->
+        <div class="field">
+          <label>Fecha Revisión</label>
+          <input type="date" formControlName="date_revision" />
+        </div>
+
+        <div class="field"></div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="actions">
+        <!-- Cancelar -->
+
+        <button type="button" class="btn" routerLink="/products">
+          Cancelar
+        </button>
+
+
+        <!-- Reiniciar -->
+        <button type="button" class="btn" (click)="reset()" [disabled]="saving()">
+          Reiniciar
+        </button>
+
+        <!-- Enviar / Actualizar -->
+        <button type="submit" class="btnPrimary" [disabled]="saving() || form.invalid">
+
+          @if (saving()) {
+          Guardando...
+          } @else {
+          @if (editId) {
+          Actualizar
+          } @else {
+          Enviar
+          }
+          }
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

@@ -11,116 +11,137 @@
   <main class="card">
     <!-- Toolbar -->
     <div class="toolbar">
-      <input
-        class="search"
-        type="text"
-        placeholder="Search..."
-        [ngModel]="query"
-        (ngModelChange)="onQueryChange($event)"
-      />
+      <input class="search" type="text" placeholder="Search..." [ngModel]="query"
+        (ngModelChange)="onQueryChange($event)" />
+
+      <a class="btnPrimary" routerLink="/products/new">Agregar</a>
+
     </div>
 
     <!-- LOADING -->
     @if (loading()) {
-      <div class="loadingBox">
-        @for (i of skeletonRows; track i) {
-          <div class="skeletonRow"></div>
-        }
-      </div>
+    <div class="loadingBox">
+      @for (i of skeletonRows; track i) {
+      <div class="skeletonRow"></div>
+      }
+    </div>
     }
 
     <!-- ERROR -->
     @else if (error()) {
-      <div class="errorBox">
-        <div class="errorTitle">Ocurrió un error</div>
-        <div class="errorText">{{ error() }}</div>
-      </div>
+    <div class="errorBox">
+      <div class="errorTitle">Ocurrió un error</div>
+      <div class="errorText">{{ error() }}</div>
+    </div>
     }
 
     <!-- CONTENT -->
     @else {
-      <div class="tableWrap">
-        <table class="table" aria-label="Listado de productos">
-          <thead>
-            <tr>
-              <th class="colLogo">Logo</th>
-              <th>Nombre del producto</th>
-              <th>Descripción</th>
-              <th class="colDate">Fecha de liberación</th>
-              <th class="colDate">Fecha de reestructuración</th>
-            </tr>
-          </thead>
+    <div class="tableWrap">
+      <table class="table" aria-label="Listado de productos">
+        <thead>
+          <tr>
+            <th class="colLogo">Logo</th>
+            <th>Nombre del producto</th>
+            <th>Descripción</th>
+            <th class="colDate">Fecha de liberación</th>
+            <th class="colDate">Fecha de reestructuración</th>
+            <th class="colActions"></th>
+          </tr>
+        </thead>
 
-          <tbody>
-            @for (p of pagedProducts; track p.id) {
-              <tr>
-                <td class="colLogo">
-                  <div class="avatar" title="{{ p.logo }}">
-                    {{ (p.name?.[0] || 'P') | uppercase }}
-                  </div>
-                </td>
+        <tbody>
+          @for (p of pagedProducts; track p.id) {
+          <tr>
+            <td class="colLogo">
+              <div class="avatar" title="{{ p.logo }}">
+                {{ (p.name?.[0] || 'P') | uppercase }}
+              </div>
+            </td>
 
-                <td class="ellipsis" title="{{ p.name }}">
-                  {{ p.name }}
-                </td>
+            <td class="ellipsis" title="{{ p.name }}">
+              {{ p.name }}
+            </td>
 
-                <td class="ellipsis" title="{{ p.description }}">
-                  {{ p.description }}
-                </td>
+            <td class="ellipsis" title="{{ p.description }}">
+              {{ p.description }}
+            </td>
 
-                <td class="colDate">
-                  {{ p.date_release }}
-                </td>
+            <td class="colDate">
+              {{ p.date_release }}
+            </td>
 
-                <td class="colDate">
-                  {{ p.date_revision }}
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+            <td class="colDate">
+              {{ p.date_revision }}
+            </td>
+
+            <td class="colActions">
+              <div class="menuWrap">
+                <button type="button" class="dotsBtn" (click)="toggleMenu(p.id)">⋮</button>
+
+                @if (menuOpenId === p.id) {
+                <div class="menu">
+
+                  <button type="button" class="menuItem" (click)="editProduct(p)">
+                    Editar
+                  </button>
+
+                  <button type="button" class="menuItem danger" (click)="openDeleteModal(p)">
+                    Eliminar
+                  </button>
+                </div>
+                }
+              </div>
+            </td>
+
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (deleteModalOpen && productToDelete) {
+      <div class="modalOverlay" (click)="closeDeleteModal()">
+        <div class="modalCard" (click)="$event.stopPropagation()">
+          <p class="modalText">
+            ¿Estas seguro de eliminar el producto <strong>{{ productToDelete.name }}</strong>?
+          </p>
+
+          <div class="modalActions">
+            <button type="button" class="btn" (click)="closeDeleteModal()">Cancelar</button>
+            <button type="button" class="btnPrimary" (click)="confirmDelete()">Confirmar</button>
+          </div>
+        </div>
+      </div>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="results">
+        {{ total }} Resultados
       </div>
 
-      <!-- Footer -->
-      <footer class="footer">
-        <div class="results">
-          {{ total }} Resultados
+      <div class="pager">
+        <button class="btn" type="button" (click)="prevPage()" [disabled]="page === 1">
+          ‹
+        </button>
+
+        <div class="pageInfo">
+          {{ page }} / {{ totalPages }}
         </div>
 
-        <div class="pager">
-          <button
-            class="btn"
-            type="button"
-            (click)="prevPage()"
-            [disabled]="page === 1"
-          >
-            ‹
-          </button>
+        <button class="btn" type="button" (click)="nextPage()" [disabled]="page === totalPages">
+          ›
+        </button>
 
-          <div class="pageInfo">
-            {{ page }} / {{ totalPages }}
-          </div>
-
-          <button
-            class="btn"
-            type="button"
-            (click)="nextPage()"
-            [disabled]="page === totalPages"
-          >
-            ›
-          </button>
-
-          <select
-            class="select"
-            [ngModel]="pageSize"
-            (ngModelChange)="onPageSizeChange($event)"
-          >
-            <option [ngValue]="5">5</option>
-            <option [ngValue]="10">10</option>
-            <option [ngValue]="20">20</option>
-          </select>
-        </div>
-      </footer>
+        <select class="select" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+          <option [ngValue]="5">5</option>
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+        </select>
+      </div>
+    </footer>
     }
   </main>
 </div>
